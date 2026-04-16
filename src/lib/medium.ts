@@ -61,7 +61,7 @@ export async function fetchMediumPosts(): Promise<MediumPost[]> {
 
     const pinnedPosts = PINNED_POST_LINKS.map((link) =>
       filteredPosts.find((post) => normalizeMediumUrl(post.link) === normalizeMediumUrl(link))
-    ).filter((post): post is MediumPost<typeof post> => Boolean(post));
+    ).filter((post): post is NonNullable<typeof post> => Boolean(post));
 
     const pinnedLinks = new Set(
       pinnedPosts.map((post) => normalizeMediumUrl(post.link))
