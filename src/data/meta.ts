@@ -6,7 +6,7 @@ export const GITHUB = "https://github.com/KeshavJha2002";
 export const LINKEDIN = "https://www.linkedin.com/in/keshav14275/";
 export const TWITTER = "";
 
-export const MEDIUM_USERNAME = process.env.MEDIUM_USERNAME || "";
+export const MEDIUM_USERNAME = "jhakeshav14275";
 
 export const NAV_LINKS = [
   { label: "01. about", href: "/#about" },
