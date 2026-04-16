@@ -120,6 +120,7 @@ export function About() {
               src="/KESHAV_JHA.png"
               alt="Keshav Jha"
               fill
+              sizes="(max-width: 768px) 280px, 40vw"
               style={{ objectFit: "cover" }}
             />
           </div>

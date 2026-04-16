@@ -4,7 +4,7 @@ import { featuredProjects } from "@/data/projects";
 import { Tag } from "@/components/ui/Tag";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-const StorageEngineDiagram = () => (
+const DistributedKvDiagram = () => (
   <pre
     style={{
       backgroundColor: "var(--accent-subtle)",
@@ -19,20 +19,19 @@ const StorageEngineDiagram = () => (
     }}
   >
     {`
-  ┌─────────────────────┐
-  │   KV Storage Engine │
-  ├─────────────────────┤
-  │  WAL (write-ahead)  │
-  ├──────────┬──────────┤
-  │  B-Tree  │   LSM    │
-  ├──────────┴──────────┤
-  │   MVCC (versioning) │
-  └─────────────────────┘
+  client
+    │
+    ▼
+  ┌─────────────── hash ring ───────────────┐
+  │                                         │
+ [node-a] ── gossip ── [node-b] ── gossip ── [node-c]
+    │                      │                     │
+    └─ skip list memtable  └─ vector clocks     └─ quorum W=2/N=3
     `}
   </pre>
 );
 
-const KVStoreDiagram = () => (
+const KNotifyDiagram = () => (
   <pre
     style={{
       backgroundColor: "var(--accent-subtle)",
@@ -47,11 +46,14 @@ const KVStoreDiagram = () => (
     }}
   >
     {`
-  [ node-1 ]──[ node-2 ]
-      ╲              ╱
-      [ node-3 ]
-      ╱              ╲
-  [ node-4 ]──[ node-5 ]
+  producers
+      │
+      ▼
+   [ Kafka ] ──> [ consumers ] ──> [ PostgreSQL ]
+      │               │
+      │               └─ log2 batching + manual commits
+      ▼
+  Prometheus ───────────────────────────────> Grafana
     `}
   </pre>
 );
@@ -64,6 +66,7 @@ export function Featured() {
 
   return (
     <section
+      id="projects"
       style={{
         padding: "0 60px 80px",
       }}
@@ -142,7 +145,7 @@ export function Featured() {
             </a>
           </div>
           <div style={{ flex: 1 }}>
-            <StorageEngineDiagram />
+            <DistributedKvDiagram />
           </div>
         </div>
 
@@ -214,7 +217,7 @@ export function Featured() {
             </a>
           </div>
           <div style={{ flex: 1 }}>
-            <KVStoreDiagram />
+            <KNotifyDiagram />
           </div>
         </div>
       </div>

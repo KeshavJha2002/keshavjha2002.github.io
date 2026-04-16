@@ -16,12 +16,12 @@ export function Projects() {
 
   return (
     <section
-      id="projects"
+      id="project-grid"
       style={{
         padding: "80px 60px",
       }}
     >
-      <SectionHeading number="03." title="things i've built" />
+      {/* <SectionHeading number="03." title="things i've built" /> */}
 
       <div
         style={{

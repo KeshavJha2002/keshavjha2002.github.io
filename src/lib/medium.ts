@@ -1,6 +1,12 @@
 import { MediumPost } from "@/types";
 import { MEDIUM_USERNAME } from "@/data/meta";
 
+const PINNED_POST_LINKS = [
+  "https://medium.com/@jhakeshav14275/essential-react-concepts-you-must-know-for-developers-interviews-995bf7e690db",
+];
+
+const EXCLUDED_POST_TITLE_PATTERNS = [/\bHTTP\b/i];
+
 interface Rss2JsonResponse {
   status: string;
   feed: {
@@ -41,13 +47,31 @@ export async function fetchMediumPosts(): Promise<MediumPost[]> {
       return [];
     }
 
-    return data.items.map((item) => ({
+    const posts = data.items.map((item) => ({
       title: item.title,
       link: item.link,
       pubDate: item.pubDate,
       description: item.description || item.content || "",
       readTime: estimateReadTime(item.content || item.description),
     }));
+
+    const filteredPosts = posts.filter((post) =>
+      EXCLUDED_POST_TITLE_PATTERNS.every((pattern) => !pattern.test(post.title))
+    );
+
+    const pinnedPosts = PINNED_POST_LINKS.map((link) =>
+      filteredPosts.find((post) => normalizeMediumUrl(post.link) === normalizeMediumUrl(link))
+    ).filter((post): post is MediumPost => Boolean(post));
+
+    const pinnedLinks = new Set(
+      pinnedPosts.map((post) => normalizeMediumUrl(post.link))
+    );
+
+    const remainingPosts = filteredPosts.filter(
+      (post) => !pinnedLinks.has(normalizeMediumUrl(post.link))
+    );
+
+    return [...pinnedPosts, ...remainingPosts];
   } catch {
     return [];
   }
@@ -58,4 +82,8 @@ function estimateReadTime(content: string): string | undefined {
   const wordCount = text.split(/\s+/).length;
   const minutes = Math.ceil(wordCount / 200);
   return `${minutes} min read`;
+}
+
+function normalizeMediumUrl(url: string): string {
+  return url.replace(/\/$/, "");
 }
