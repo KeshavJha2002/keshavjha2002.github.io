@@ -22,7 +22,3 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
-
-## project status
-
-Work in progress. Content is placeholder until marked otherwise.
