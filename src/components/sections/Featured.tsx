@@ -4,7 +4,7 @@ import { featuredProjects } from "@/data/projects";
 import { Tag } from "@/components/ui/Tag";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-const DistributedKvDiagram = () => (
+const CppVisualizerDiagram = () => (
   <pre
     style={{
       backgroundColor: "var(--accent-subtle)",
@@ -19,19 +19,22 @@ const DistributedKvDiagram = () => (
     }}
   >
     {`
-  client
-    │
-    ▼
-  ┌─────────────── hash ring ───────────────┐
-  │                                         │
- [node-a] ── gossip ── [node-b] ── gossip ── [node-c]
-    │                      │                     │
-    └─ skip list memtable  └─ vector clocks     └─ quorum W=2/N=3
+  C++ source
+      │
+      ├── AST analysis ──────┐
+      │                      ▼
+      └── instrumentation → ordered events
+                              │
+                              ▼
+                  [ call ] → [ return ]
+                              │
+                              ▼
+                    interactive replay
     `}
   </pre>
 );
 
-const KNotifyDiagram = () => (
+const RagDiagram = () => (
   <pre
     style={{
       backgroundColor: "var(--accent-subtle)",
@@ -46,14 +49,16 @@ const KNotifyDiagram = () => (
     }}
   >
     {`
-  producers
-      │
-      ▼
-   [ Kafka ] ──> [ consumers ] ──> [ PostgreSQL ]
-      │               │
-      │               └─ log2 batching + manual commits
-      ▼
-  Prometheus ───────────────────────────────> Grafana
+  PDF → pages → chunks → embeddings
+                │             │
+                └──────┬──────┘
+                       ▼
+              [ hybrid retrieval ]
+                       │
+              rerank → context → citations
+                       │
+                       ▼
+                 evaluation metrics
     `}
   </pre>
 );
@@ -145,7 +150,7 @@ export function Featured() {
             </a>
           </div>
           <div style={{ flex: 1 }}>
-            <DistributedKvDiagram />
+            <CppVisualizerDiagram />
           </div>
         </div>
 
@@ -217,7 +222,7 @@ export function Featured() {
             </a>
           </div>
           <div style={{ flex: 1 }}>
-            <KNotifyDiagram />
+            <RagDiagram />
           </div>
         </div>
       </div>
