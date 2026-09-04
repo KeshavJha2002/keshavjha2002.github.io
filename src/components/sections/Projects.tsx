@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { gridProjects } from "@/data/projects";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { ChevronDown } from "lucide-react";
 
-const INITIAL_COUNT = 6;
+const INITIAL_COUNT = 3;
 
 export function Projects() {
   const [showAll, setShowAll] = useState(false);
@@ -15,23 +14,18 @@ export function Projects() {
     : gridProjects.slice(0, INITIAL_COUNT);
 
   return (
-    <section
+    <div
       id="project-grid"
       style={{
-        padding: "80px 60px",
+        paddingTop: "16px",
       }}
     >
-      {/* <SectionHeading number="03." title="things i've built" /> */}
-
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gap: "20px",
           marginBottom: "32px",
-          maxHeight: showAll ? "none" : `${INITIAL_COUNT * 200}px`,
-          overflow: "hidden",
-          transition: "max-height 0.5s ease",
         }}
       >
         {displayedProjects.map((project) => (
@@ -65,7 +59,7 @@ export function Projects() {
                 "var(--text-muted)")
             }
           >
-            {showAll ? "show less" : "show more"}{" "}
+            {showAll ? "Show Less" : "Show More"}{" "}
             <ChevronDown
               size={16}
               style={{
@@ -79,19 +73,16 @@ export function Projects() {
 
       <style>{`
         @media (max-width: 1024px) {
-          section#projects > div:first-of-type {
+          div#project-grid > div:first-of-type {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 768px) {
-          section#projects {
-            padding: 60px 24px !important;
-          }
-          section#projects > div:first-of-type {
+          div#project-grid > div:first-of-type {
             grid-template-columns: 1fr !important;
           }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

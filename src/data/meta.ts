@@ -1,6 +1,6 @@
 export const SITE_NAME = "Keshav Jha";
 export const EMAIL = "jhak78022@gmail.com";
-export const RESUME_URL = "https://drive.google.com/file/d/1RFgLA51J54oh2E-BZee-7lAoyZ85tsBU/view?usp=sharing";
+export const RESUME_URL = "https://drive.google.com/file/d/1l44cWFP8FYiCZ-RmSg6o7sLlUEiPZ0_l/view?usp=drive_link";
 
 export const GITHUB = "https://github.com/KeshavJha2002";
 export const LINKEDIN = "https://www.linkedin.com/in/keshav14275/";

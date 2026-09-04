@@ -1,12 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS, RESUME_URL } from "@/data/meta";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState(NAV_LINKS[0].href);
+
+  useEffect(() => {
+    const sections = NAV_LINKS.map((link) => {
+      const id = link.href.split("#")[1];
+      return id ? document.getElementById(id) : null;
+    }).filter((section): section is HTMLElement => Boolean(section));
+
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleEntry) {
+          setActiveHref(`/#${visibleEntry.target.id}`);
+        }
+      },
+      {
+        rootMargin: "-30% 0px -55% 0px",
+        threshold: [0.1, 0.25, 0.5, 0.75],
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
@@ -26,7 +57,7 @@ export function Navbar() {
           zIndex: 100,
         }}
       >
-        <a
+        <Link
           href="/"
           style={{
             color: "var(--accent)",
@@ -36,7 +67,7 @@ export function Navbar() {
           }}
         >
           &gt;_ kj
-        </a>
+        </Link>
 
         <div
           style={{
@@ -47,26 +78,36 @@ export function Navbar() {
           className="desktop-nav"
         >
           {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "13px",
-                fontFamily: "inherit",
-                transition: "color 0.2s ease",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.color =
-                  "var(--accent)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.color =
-                  "var(--text-muted)")
-              }
-            >
-              {link.label}
-            </a>
+            (() => {
+              const isActive = activeHref === link.href;
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    color: isActive ? "var(--accent)" : "var(--text-muted)",
+                    fontSize: "13px",
+                    fontFamily: "inherit",
+                    padding: "6px 0",
+                    borderBottom: isActive
+                      ? "1px solid var(--accent)"
+                      : "1px solid transparent",
+                    transition: "color 0.2s ease, border-color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color =
+                      "var(--accent)")
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color =
+                      isActive ? "var(--accent)" : "var(--text-muted)")
+                  }
+                >
+                  {link.label}
+                </Link>
+              );
+            })()
           ))}
 
           <a
@@ -138,18 +179,25 @@ export function Navbar() {
           }}
         >
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
               style={{
-                color: "var(--text-muted)",
+                color:
+                  activeHref === link.href
+                    ? "var(--accent)"
+                    : "var(--text-muted)",
                 fontSize: "24px",
                 fontFamily: "inherit",
+                borderBottom:
+                  activeHref === link.href
+                    ? "1px solid var(--accent)"
+                    : "1px solid transparent",
               }}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <a
             href={RESUME_URL}

@@ -9,6 +9,7 @@ import { Projects } from "@/components/sections/Projects";
 import { Featured } from "@/components/sections/Featured";
 import { Blog } from "@/components/sections/Blog";
 import { Contact } from "@/components/sections/Contact";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export default function Home() {
   return (
@@ -32,8 +33,19 @@ export default function Home() {
         <hr className="section-divider" />
         <Experience />
         <hr className="section-divider" />
-        <Projects />
-        <Featured />
+        <section
+          id="projects"
+          style={{
+            padding: "80px 60px",
+          }}
+        >
+          <SectionHeading
+            number="03."
+            title="check out the projects I have worked on"
+          />
+          <Featured />
+          <Projects />
+        </section>
         <hr className="section-divider" />
         <Blog />
         <hr className="section-divider" />
@@ -47,6 +59,9 @@ export default function Home() {
           main {
             padding-left: 0 !important;
             padding-right: 0 !important;
+          }
+          section#projects {
+            padding: 60px 24px !important;
           }
         }
       `}</style>

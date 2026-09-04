@@ -2,9 +2,8 @@
 
 import { featuredProjects } from "@/data/projects";
 import { Tag } from "@/components/ui/Tag";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 
-const CppVisualizerDiagram = () => (
+const RediscopeDiagram = () => (
   <pre
     style={{
       backgroundColor: "var(--accent-subtle)",
@@ -19,22 +18,21 @@ const CppVisualizerDiagram = () => (
     }}
   >
     {`
-  C++ source
+  dump.rdb
       │
-      ├── AST analysis ──────┐
-      │                      ▼
-      └── instrumentation → ordered events
-                              │
-                              ▼
-                  [ call ] → [ return ]
-                              │
-                              ▼
-                    interactive replay
+      ├── checksum validation
+      │
+      ├── byte parser → record index
+      │                 │
+      ▼                 ▼
+  CLI package      local web inspector
+      │                 │
+      └──── npm install rediscope
     `}
   </pre>
 );
 
-const RagDiagram = () => (
+const EseklDiagram = () => (
   <pre
     style={{
       backgroundColor: "var(--accent-subtle)",
@@ -49,16 +47,17 @@ const RagDiagram = () => (
     }}
   >
     {`
-  PDF → pages → chunks → embeddings
-                │             │
-                └──────┬──────┘
-                       ▼
-              [ hybrid retrieval ]
-                       │
-              rerank → context → citations
-                       │
-                       ▼
-                 evaluation metrics
+  mature systems evidence
+              │
+              ▼
+  provenance-traced knowledge
+              │
+      ┌───────┴────────┐
+      ▼                ▼
+  architecture     verification
+  critique         planning
+      │                │
+      └──── MCP tools ─┘
     `}
   </pre>
 );
@@ -70,10 +69,9 @@ export function Featured() {
   if (!project1 || !project2) return null;
 
   return (
-    <section
-      id="projects"
+    <div
       style={{
-        padding: "0 60px 80px",
+        paddingBottom: "64px",
       }}
     >
       <div
@@ -134,23 +132,41 @@ export function Featured() {
                 <Tag key={tag}>{tag}</Tag>
               ))}
             </div>
-            <a
-              href={project1.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "var(--accent)",
-                fontSize: "13px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              View on GitHub →
-            </a>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <a
+                href={project1.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "var(--accent)",
+                  fontSize: "13px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                View on GitHub →
+              </a>
+              {project1.external && (
+                <a
+                  href={project1.external}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--accent)",
+                    fontSize: "13px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  Open package →
+                </a>
+              )}
+            </div>
           </div>
           <div style={{ flex: 1 }}>
-            <CppVisualizerDiagram />
+            <RediscopeDiagram />
           </div>
         </div>
 
@@ -206,23 +222,41 @@ export function Featured() {
                 <Tag key={tag}>{tag}</Tag>
               ))}
             </div>
-            <a
-              href={project2.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "var(--accent)",
-                fontSize: "13px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              View on GitHub →
-            </a>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <a
+                href={project2.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "var(--accent)",
+                  fontSize: "13px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                View on GitHub →
+              </a>
+              {project2.external && (
+                <a
+                  href={project2.external}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--accent)",
+                    fontSize: "13px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  Open package →
+                </a>
+              )}
+            </div>
           </div>
           <div style={{ flex: 1 }}>
-            <RagDiagram />
+            <EseklDiagram />
           </div>
         </div>
       </div>
@@ -237,6 +271,6 @@ export function Featured() {
           }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

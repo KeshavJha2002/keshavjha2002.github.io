@@ -1,7 +1,6 @@
 "use client";
 
 import { ExternalLink } from "lucide-react";
-import { GITHUB, LINKEDIN, TWITTER } from "@/data/meta";
 import { Project } from "@/types";
 import { Tag } from "./Tag";
 

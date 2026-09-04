@@ -1,12 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const frame = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
@@ -78,7 +80,7 @@ export function Hero() {
             opacity: mounted ? undefined : 0,
           }}
         >
-          <a
+          <Link
             href="/#projects"
             style={{
               color: "var(--accent)",
@@ -100,8 +102,8 @@ export function Hero() {
             }}
           >
             view my work
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#blog"
             style={{
               color: "var(--text-muted)",
@@ -127,7 +129,7 @@ export function Hero() {
             }}
           >
             read blog →
-          </a>
+          </Link>
         </div>
       </div>
 

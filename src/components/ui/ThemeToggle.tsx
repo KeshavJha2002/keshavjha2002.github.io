@@ -1,16 +1,48 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+type Theme = "dark" | "light";
+
+function getPreferredTheme(): Theme {
+  const storedTheme = window.localStorage.getItem("theme");
+
+  if (storedTheme === "dark" || storedTheme === "light") {
+    return storedTheme;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  window.localStorage.setItem("theme", theme);
+}
+
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const frame = requestAnimationFrame(() => {
+      const preferredTheme = getPreferredTheme();
+      applyTheme(preferredTheme);
+      setTheme(preferredTheme);
+      setMounted(true);
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+
+    applyTheme(nextTheme);
+    setTheme(nextTheme);
+  };
 
   if (!mounted) {
     return (
@@ -30,7 +62,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={toggleTheme}
       style={{
         background: "transparent",
         border: "none",
