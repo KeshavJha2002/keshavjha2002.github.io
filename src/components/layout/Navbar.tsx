@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState(NAV_LINKS[0].href);
+  const [activeHref, setActiveHref] = useState<string>(NAV_LINKS[0].href);
 
   useEffect(() => {
     const sections = NAV_LINKS.map((link) => {
